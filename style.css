@@ -1,0 +1,30 @@
+/* Subtle extras for a 2025 feel */
+.only-digits {
+  /* On iOS/Android, inputmode already helps; this is just cosmetic */
+  letter-spacing: 0.5px;
+}
+
+.result-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+  padding: 1rem;
+}
+/* Custom dropdown */
+.dropdown-item {
+  padding: 0.625rem 0.875rem;
+  cursor: pointer;
+  color: #e5e7eb; /* slate-200 */
+}
+.dropdown-item:hover,
+.dropdown-item[aria-selected="true"] {
+  background-color: rgba(99, 102, 241, 0.15); /* indigo-500/15 */
+  color: #ffffff;
+}
+#actionMenu::-webkit-scrollbar {
+  width: 8px;
+}
+#actionMenu::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 9999px;
+}
