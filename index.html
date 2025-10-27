@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rise of Castles – Training Calculator</title>
+    <!-- Tailwind via CDN for a modern, responsive UI -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tailwind config for fonts and colors
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto'],
+              body: ['Inter', 'ui-sans-serif', 'system-ui', 'Segoe UI', 'Roboto'],
+            },
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body class="font-body bg-gradient-to-br from-gray-950 via-slate-900 to-gray-900 text-white" style="min-height: 100%; height: auto;">
+    <div class="absolute inset-0 -z-10">
+      <!-- soft gradient blobs -->
+      <div class="pointer-events-none absolute -top-24 -left-24 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl"></div>
+      <div class="pointer-events-none absolute -bottom-24 -right-24 h-80 w-80 rounded-full bg-emerald-500/20 blur-3xl"></div>
+    </div>
+
+    <header class="w-full">
+      <div class="mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
+        <h1 class="text-3xl font-bold text-center bg-gradient-to-r from-indigo-400 to-emerald-400 bg-clip-text text-transparent">Rise of Castles – Training Calculator</h1>
+      </div>
+    </header>
+
+    <main class="mx-auto w-full px-4 sm:px-6 lg:px-8 pb-16">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Left: Form -->
+        <section class="lg:col-span-2">
+          <div class="backdrop-blur-xl bg-white/5 ring-1 ring-white/10 rounded-2xl shadow-xl p-6 sm:p-8">
+            <h2 class="text-xl font-semibold mb-4">Inputs</h2>
+
+            <form id="calcForm" class="grid grid-cols-1 gap-6">
+              <!-- 1st field: dropdown -->
+              <div>
+                <label class="block text-sm font-medium text-slate-200 mb-2">What do you want to do?</label>
+                <div id="actionDropdown" class="relative">
+                  <!-- Hidden input to store value -->
+                  <input type="hidden" id="action" name="action" value="Train SSS">
+
+                  <!-- Dropdown button -->
+                  <button type="button" id="actionBtn"
+                    class="w-full rounded-xl bg-white/10 border border-white/10 p-3 pr-10 text-left focus:outline-none focus:ring-2 focus:ring-indigo-500 flex items-center justify-between">
+                    <span id="actionLabel" class="truncate">Train SSS</span>
+                    <svg class="w-4 h-4 opacity-80" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+
+                  <!-- Dropdown menu -->
+                  <ul id="actionMenu" role="listbox" tabindex="-1"
+                      class="hidden absolute z-20 mt-2 w-full max-h-64 overflow-auto rounded-xl border border-white/10 bg-slate-800/95 backdrop-blur-xl shadow-xl focus:outline-none">
+                    <li data-value="Train SSS" class="dropdown-item">Train SSS</li>
+                    <li data-value="Train Lofty" class="dropdown-item">Train Lofty</li>
+                    <li data-value="Train T10" class="dropdown-item">Train T10</li>
+                    <li data-value="Train T9" class="dropdown-item">Train T9</li>
+                    <li data-value="Promote T9 to T10" class="dropdown-item">Promote T9 to T10</li>
+                    <li data-value="Promote T9E to T10E" class="dropdown-item">Promote T9E to T10E</li>
+                    <li data-value="Enhance T10 to T10E" class="dropdown-item">Enhance T10 to T10E</li>
+                    <li data-value="Enhance T9 to T9E" class="dropdown-item">Enhance T9 to T9E</li>
+                  </ul>
+                </div>
+                <p class="mt-2 text-xs text-slate-400">Tip: CoP baseline values are preloaded. If a value isn't provided for an action, the CoP line will show N/A.</p>
+              </div>
+
+              <!-- 2nd field: E, C, D in one row -->
+              <div>
+                <label class="block text-sm font-medium text-slate-200 mb-2">Game snapshot values (numbers only)</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div class="group">
+                    <div class="flex items-center justify-between">
+                      <label for="colE" class="text-xs text-slate-300">Column E (Troops count)</label>
+                    </div>
+                    <input id="colE" name="colE" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 13411" class="w-full rounded-xl bg-white/10 border border-white/10 p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 only-digits">
+                    <p class="text-[11px] text-slate-400 mt-1">Used as divisor for per-troop costs.</p>
+                  </div>
+
+                  <div class="group">
+                    <div class="flex items-center justify-between">
+                      <label for="colC" class="text-xs text-slate-300">Column C (Gems – "Train Now!")</label>
+                    </div>
+                    <input id="colC" name="colC" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 5145" class="w-full rounded-xl bg-white/10 border border-white/10 p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 only-digits">
+                    <p class="text-[11px] text-slate-400 mt-1">C / E → <span class="font-semibold">gem cost per troop</span>.</p>
+                  </div>
+
+                  <div class="group">
+                    <div class="flex items-center justify-between">
+                      <label for="colD" class="text-xs text-slate-300">Column D (Speedups – hours)</label>
+                    </div>
+                    <input id="colD" name="colD" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 50" class="w-full rounded-xl bg-white/10 border border-white/10 p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 only-digits">
+                    <p class="text-[11px] text-slate-400 mt-1">D / E → <span class="font-semibold">speedup hours per troop</span>.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 3rd field: Amount to train -->
+              <div>
+                <label for="amount" class="block text-sm font-medium text-slate-200 mb-2">Amount you want to train</label>
+                <input id="amount" name="amount" inputmode="numeric" pattern="[0-9]*" placeholder="e.g., 100000" class="w-full rounded-xl bg-white/10 border border-white/10 p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 only-digits">
+              </div>
+
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" id="calcBtn" class="rounded-xl px-5 py-3 bg-indigo-500 hover:bg-indigo-600 active:bg-indigo-700 transition shadow-lg shadow-indigo-500/25 font-semibold">
+                  Calculate
+                </button>
+                <button type="reset" class="rounded-xl px-5 py-3 bg-white/10 hover:bg-white/20 transition border border-white/10">Clear</button>
+                <span id="validationMsg" class="text-sm text-red-300"></span>
+              </div>
+            </form>
+          </div>
+
+          <!-- Results -->
+          <div class="mt-6 backdrop-blur-xl bg-white/5 ring-1 ring-white/10 rounded-2xl shadow-xl p-6 sm:p-8">
+            <h2 class="text-xl font-semibold mb-4">Results</h2>
+            <div id="results" class="space-y-2 text-slate-200">
+              <p class="text-slate-400">Fill the fields and click <span class="font-semibold text-slate-200">Calculate</span> to see totals.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: Example image / guide -->
+        <aside class="lg:col-span-1">
+          <div class="backdrop-blur-xl bg-white/5 ring-1 ring-white/10 rounded-2xl overflow-hidden shadow-xl">
+            <div class="p-4 border-b border-white/10 flex items-center justify-between">
+              <h3 class="font-semibold">Template</h3>
+              <span class="text-xs text-slate-400">Use as a visual guide</span>
+            </div>
+            <div class="p-2">
+              <img src="guide.png" alt="Example training screen" class="rounded-xl w-full h-auto object-cover">
+            </div>
+            <div class="p-4 text-xs text-slate-400">
+              Columns mapping: <span class="font-semibold text-slate-200">E</span> = troop count, <span class="font-semibold text-slate-200">C</span> = "Train Now!" gems, <span class="font-semibold text-slate-200">D</span> = total hours. Enter <em>numbers only</em>.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="py-6 border-t border-white/5">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 text-center text-slate-400 text-sm">
+        <p>Rise of Castles Training Calculator</p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
