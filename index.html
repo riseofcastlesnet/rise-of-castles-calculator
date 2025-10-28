@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rise of Castles – Training Calculator</title>
+    
+    <!-- Google Fonts - Medieval Style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700;900&family=Spectral:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style-medieval.css">
+  </head>
+  <body>
+    <!-- Medieval Background -->
+    <div class="medieval-bg"></div>
+    <div class="texture-overlay"></div>
+
+    <!-- Header with Medieval Banner -->
+    <header class="medieval-header">
+      <div class="banner-top"></div>
+      <div class="container">
+        <div class="header-ornament">⚔</div>
+        <h1 class="medieval-title">
+          <span class="title-main">Rise of Castles</span>
+          <span class="title-sub">Training Calculator</span>
+        </h1>
+        <div class="header-ornament">⚔</div>
+      </div>
+      <div class="banner-bottom"></div>
+    </header>
+
+    <main class="container main-content">
+      <div class="grid-layout">
+        <!-- Left: Form in Medieval Scroll -->
+        <section class="form-section">
+          <div class="scroll-container">
+            <div class="scroll-top"></div>
+            <div class="scroll-content">
+              <h2 class="section-title">
+                <span class="shield-icon">🛡️</span>
+                Training Inputs
+                <span class="shield-icon">🛡️</span>
+              </h2>
+
+              <form id="calcForm" class="medieval-form">
+                <!-- 1st field: dropdown -->
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="label-icon">⚔️</span>
+                    What do you want to do?
+                  </label>
+                  <div id="actionDropdown" class="medieval-dropdown">
+                    <input type="hidden" id="action" name="action" value="Train SSS">
+                    
+                    <button type="button" id="actionBtn" class="dropdown-button">
+                      <span id="actionLabel">Train SSS</span>
+                      <span class="dropdown-arrow">▼</span>
+                    </button>
+
+                    <ul id="actionMenu" class="dropdown-menu" role="listbox" tabindex="-1">
+                      <li data-value="Train SSS" class="dropdown-item">⚔️ Train SSS</li>
+                      <li data-value="Train Lofty" class="dropdown-item">🏰 Train Lofty</li>
+                      <li data-value="Train T10" class="dropdown-item">🛡️ Train T10</li>
+                      <li data-value="Train T9" class="dropdown-item">⚔️ Train T9</li>
+                      <li data-value="Promote T9 to T10" class="dropdown-item">⬆️ Promote T9 to T10</li>
+                      <li data-value="Promote T9E to T10E" class="dropdown-item">⬆️ Promote T9E to T10E</li>
+                      <li data-value="Enhance T10 to T10E" class="dropdown-item">✨ Enhance T10 to T10E</li>
+                      <li data-value="Enhance T9 to T9E" class="dropdown-item">✨ Enhance T9 to T9E</li>
+                    </ul>
+                  </div>
+                  <p class="form-hint">💡 CoP baseline values are preloaded for each action type.</p>
+                </div>
+
+                <!-- 2nd field: E, C, D -->
+                <div class="form-group">
+                  <label class="form-label">
+                    <span class="label-icon">📜</span>
+                    Game snapshot values (numbers only)
+                  </label>
+                  <div class="input-grid">
+                    <div class="input-group">
+                      <label for="colE" class="input-label">Column E</label>
+                      <span class="input-sublabel">Troops count</span>
+                      <input id="colE" name="colE" inputmode="numeric" pattern="[0-9]*" placeholder="13411" class="medieval-input only-digits">
+                      <span class="input-hint">Used as divisor</span>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="colC" class="input-label">Column C</label>
+                      <span class="input-sublabel">Gems ("Train Now!")</span>
+                      <input id="colC" name="colC" inputmode="numeric" pattern="[0-9]*" placeholder="5145" class="medieval-input only-digits">
+                      <span class="input-hint">C / E → gem/troop</span>
+                    </div>
+
+                    <div class="input-group">
+                      <label for="colD" class="input-label">Column D</label>
+                      <span class="input-sublabel">Speedups (hours)</span>
+                      <input id="colD" name="colD" inputmode="numeric" pattern="[0-9]*" placeholder="50" class="medieval-input only-digits">
+                      <span class="input-hint">D / E → hours/troop</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 3rd field: Amount -->
+                <div class="form-group">
+                  <label for="amount" class="form-label">
+                    <span class="label-icon">🎯</span>
+                    Amount you want to train
+                  </label>
+                  <input id="amount" name="amount" inputmode="numeric" pattern="[0-9]*" placeholder="100000" class="medieval-input only-digits">
+                </div>
+
+                <div class="button-group">
+                  <button type="button" id="calcBtn" class="btn-primary">
+                    <span class="btn-icon">⚔️</span>
+                    Calculate
+                  </button>
+                  <button type="reset" class="btn-secondary">
+                    <span class="btn-icon">🔄</span>
+                    Clear
+                  </button>
+                </div>
+                <span id="validationMsg" class="error-message"></span>
+              </form>
+            </div>
+            <div class="scroll-bottom"></div>
+          </div>
+
+          <!-- Results in Medieval Parchment -->
+          <div class="scroll-container results-container">
+            <div class="scroll-top"></div>
+            <div class="scroll-content">
+              <h2 class="section-title">
+                <span class="shield-icon">📊</span>
+                Results
+                <span class="shield-icon">📊</span>
+              </h2>
+              <div id="results" class="results-content">
+                <p class="results-empty">
+                  <span class="empty-icon">⚡</span>
+                  Fill the fields and click <strong>Calculate</strong> to see your battle-ready totals.
+                </p>
+              </div>
+            </div>
+            <div class="scroll-bottom"></div>
+          </div>
+        </section>
+
+        <!-- Right: Guide in Medieval Frame -->
+        <aside class="guide-section">
+          <div class="medieval-frame">
+            <div class="frame-corner frame-tl"></div>
+            <div class="frame-corner frame-tr"></div>
+            <div class="frame-corner frame-bl"></div>
+            <div class="frame-corner frame-br"></div>
+            
+            <div class="frame-header">
+              <h3 class="frame-title">📖 Visual Template</h3>
+              <span class="frame-subtitle">Use as reference guide</span>
+            </div>
+            
+            <div class="frame-content">
+              <img src="guide.png" alt="Training screen example showing columns E, C, and D" class="guide-image">
+            </div>
+            
+            <div class="frame-footer">
+              <p class="frame-text">
+                <strong>Column E</strong> = troop count<br>
+                <strong>Column C</strong> = "Train Now!" gems<br>
+                <strong>Column D</strong> = total hours<br>
+                <em>Enter numbers only</em>
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="medieval-footer">
+      <div class="footer-ornament">⚔ ⚔ ⚔</div>
+      <p class="footer-text">Rise of Castles Training Calculator</p>
+      <p class="footer-subtext">May your armies be swift and your victories plentiful</p>
+      <div class="footer-ornament">⚔ ⚔ ⚔</div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
